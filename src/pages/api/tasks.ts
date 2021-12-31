@@ -6,17 +6,13 @@ export default function tasks(req: NextApiRequest, res: NextApiResponse) {
 
     switch (method) {
         case 'GET':
-            res.status(200).json('Getting tasks')
-            break;
+            return res.status(200).json('Getting tasks')
         case 'POST':
-            res.status(200).json('Posting a task')
-            break;
+            return res.status(200).json('Posting a task')
         case 'DELETE':
-            res.status(200).json('Deleting a task')
-            break;
+            return res.status(200).json('Deleting a task')
         case 'PUT':
-            res.status(200).json('Updating a task')
-            break;
+            return res.status(200).json('Updating a task')
         default:
             res.status(400).json('Method not allowed')
             break;

@@ -18,7 +18,14 @@ export default async function tasks(req: NextApiRequest, res: NextApiResponse) {
         case 'PUT':
             return res.status(200).json(`Updating task ${query.id}`)
         case 'DELETE':
-            return res.status(200).json(`Deleting task ${query.id}`)
+            try {
+                const text = 'DELETE FROM tasks WHERE id = $1'
+                const values = [query.id];
+                const result = await conn.query(text, values);
+                return res.json(result)
+            } catch (error) {
+                return res.status(400).json(error);
+            }
         default:
             res.status(400).json('Method not allowed')
             break;

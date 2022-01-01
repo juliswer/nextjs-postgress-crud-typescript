@@ -11,6 +11,10 @@ export default async function tasks(req: NextApiRequest, res: NextApiResponse) {
                 const text = 'SELECT * FROM tasks WHERE id = $1'
                 const values = [query.id];
                 const result = await conn.query(text, values);
+
+                if(result.rows.length === 0) {
+                    return res.status(404).json({error: 'Task not found'})
+                }
                 return res.json(result.rows[0]);
             } catch (error) {
                 return res.status(400).json(error);
@@ -21,8 +25,10 @@ export default async function tasks(req: NextApiRequest, res: NextApiResponse) {
                 const text = 'UPDATE tasks SET title = $1, description = $2 WHERE id = $3'
                 const values = [title, description, query.id];
                 const result = await conn.query(text, values);
-                console.log(result)
-                return res.json('Task updated');
+                if(result.rows.length === 0) {
+                    return res.status(404).json({error: 'Task not found'})
+                }
+                return res.json(result.rows[0]);
             } catch (error) {
                 return res.status(400).json(error);
             }
@@ -31,7 +37,10 @@ export default async function tasks(req: NextApiRequest, res: NextApiResponse) {
                 const text = 'DELETE FROM tasks WHERE id = $1'
                 const values = [query.id];
                 const result = await conn.query(text, values);
-                return res.json(result)
+                if(result.rowCount === 0) {
+                    return res.status(404).json({error: 'Task not found'})
+                }                
+                return res.json(result.rows[0])
             } catch (error) {
                 return res.status(400).json(error);
             }

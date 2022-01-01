@@ -60,6 +60,7 @@ export default function newPage() {
         } else {
             createTask(task)
         }
+        router.push('/')
     }
 
     useEffect(() => {
@@ -84,10 +85,17 @@ export default function newPage() {
                             <label htmlFor="description">Description</label>
                             <textarea value={task.description} name="description" rows={2} placeholder="Write your description" onChange={handleChange}></textarea>
                         </Form.Field>
-                        <Button>
-                            <Icon name="save" />
-                            {router.query.id ? 'Update' : 'Save'}
-                        </Button>
+                        {router.query.id ? (
+                            <Button color="teal">
+                                <Icon name="exchange" />
+                                Update
+                            </Button>
+                        ): (
+                            <Button color="primary">
+                                <Icon name="save" />
+                                Save
+                            </Button>
+                        )}
                     </Form>
                 </Card.Content>
             </Card>

@@ -31,6 +31,18 @@ export default function newPage() {
         console.log(data);
     }
 
+    const updateTask = async (task: Task) => {
+        const response = await fetch(`/api/tasks/${task.id}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(task)
+        });
+        const data = await response.json();
+        console.log(data);
+    }
+
     const handleChange = (e: ChangeEvent<HTMLInputElement|HTMLTextAreaElement>) => {
         setTask({
             ...task,
@@ -40,11 +52,13 @@ export default function newPage() {
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
-        try {
-            await createTask(task)
-            router.push('/')
-        } catch (error) {
-            console.log(error)
+
+        const {id} = router.query
+
+        if(id) {
+            updateTask(task)
+        } else {
+            createTask(task)
         }
     }
 

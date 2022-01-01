@@ -2,7 +2,7 @@ import React from 'react'
 import {Task} from 'src/interfaces/Task';
 import {Grid, Button} from 'semantic-ui-react';
 import {useRouter} from 'next/router';
-import TaskList from 'src/components/TaskList';
+import TaskList from 'src/components/tasks/TaskList';
 
 interface Props {
   tasks: Task[]

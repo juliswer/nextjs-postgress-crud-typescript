@@ -16,7 +16,16 @@ export default async function tasks(req: NextApiRequest, res: NextApiResponse) {
                 return res.status(400).json(error);
             }
         case 'PUT':
-            return res.status(200).json(`Updating task ${query.id}`)
+            try {
+                const {title, description} = req.body
+                const text = 'UPDATE tasks SET title = $1, description = $2 WHERE id = $3'
+                const values = [title, description, query.id];
+                const result = await conn.query(text, values);
+                console.log(result)
+                return res.json('Task updated');
+            } catch (error) {
+                
+            }
         case 'DELETE':
             try {
                 const text = 'DELETE FROM tasks WHERE id = $1'

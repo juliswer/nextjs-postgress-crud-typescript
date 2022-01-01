@@ -1,14 +1,26 @@
 import {NextApiRequest, NextApiResponse} from 'next'
+import {conn} from '../../../utils/database'
 
-export default function tasks(req: NextApiRequest, res: NextApiResponse) {
+export default async function tasks(req: NextApiRequest, res: NextApiResponse) {
 
-    const {method} = req;
+    const {method, body} = req;
 
     switch (method) {
         case 'GET':
-            return res.status(200).json('Getting tasks')
+            return res.json('getting tasks')
         case 'POST':
-            return res.status(200).json('Posting a task')
+            /* const {title, description} = body;
+            await conn.query('INSERT INTO tasks (title, description) VALUES ($1, $2)', [title, description]);
+            break; */
+            const {title, description} = body;
+            console.log(title)
+
+            const query = "INSERT INTO tasks(title, description) VALUES ($1, $2) RETURNING *";
+            const values = [title, description];
+
+            const response = await conn.query(query, values);
+
+            return res.status(200).json(response.rows[0]);
         case 'DELETE':
             return res.status(200).json('Deleting a task')
         case 'PUT':

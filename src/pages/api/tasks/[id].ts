@@ -1,13 +1,14 @@
 import { NextApiRequest, NextApiResponse } from "next";
+import {conn} from '../../../utils/database'
 
-export default function tasks(req: NextApiRequest, res: NextApiResponse) {
+export default async function tasks(req: NextApiRequest, res: NextApiResponse) {
     
     const {method} = req;
     const {id} = req.query;
 
     switch (method) {
         case 'GET':
-            return res.status(200).json(`Getting task ${id}`)
+            await conn.query('SELECT * FROM tasks WHERE id = $1', [id])
         case 'PUT':
             return res.status(200).json(`Updating task ${id}`)
         case 'DELETE':

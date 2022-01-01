@@ -72,7 +72,7 @@ export default function newPage() {
                         </Form.Field>
                         <Button>
                             <Icon name="save" />
-                            Save
+                            {router.query.id ? 'Update' : 'Save'}
                         </Button>
                     </Form>
                 </Card.Content>

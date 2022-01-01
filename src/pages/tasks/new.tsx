@@ -1,5 +1,5 @@
 import {ChangeEvent, useState, useEffect} from 'react';
-import {Button, Card, Form, Icon} from 'semantic-ui-react';
+import {Button, Card, Form, Grid, Icon, Confirm} from 'semantic-ui-react';
 import { useRouter } from "next/router";
 import {Task} from 'src/interfaces/Task';
 import Layout from 'src/components/Layout'
@@ -12,6 +12,8 @@ export default function newPage() {
         title: '',
         description: '',
     })
+
+    const [openConfirm, setOpenConfirm] = useState(false);
 
     const loadTask = async (id: string) => {
         const response = await fetch(`/api/tasks/${id}`);
@@ -41,6 +43,17 @@ export default function newPage() {
         });
         const data = await response.json();
         console.log(data);
+    }
+
+    const deleteTask = async (task: Task) => {
+        const response = await fetch(`/api/tasks/${task.id}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+        });
+        const data = await response.json();
+        router.push('/')
     }
 
     const handleChange = (e: ChangeEvent<HTMLInputElement|HTMLTextAreaElement>) => {
@@ -74,31 +87,48 @@ export default function newPage() {
 
     return (
         <Layout>
-            <Card>
-                <Card.Content>
-                    <Form onSubmit={handleSubmit}>
-                        <Form.Field>
-                            <label htmlFor="title">Title</label>
-                            <input value={task.title} type="text" placeholder="Write your title" name="title" onChange={handleChange} />
-                        </Form.Field>
-                        <Form.Field>
-                            <label htmlFor="description">Description</label>
-                            <textarea value={task.description} name="description" rows={2} placeholder="Write your description" onChange={handleChange}></textarea>
-                        </Form.Field>
-                        {router.query.id ? (
-                            <Button color="teal">
-                                <Icon name="exchange" />
-                                Update
-                            </Button>
-                        ): (
-                            <Button color="primary">
-                                <Icon name="save" />
-                                Save
-                            </Button>
-                        )}
-                    </Form>
-                </Card.Content>
-            </Card>
+            <Grid centered columns={3} verticalAlign='middle' style={{height: '70%'}}>
+                <Grid.Column>
+                    <Card>
+                        <Card.Content>
+                            <Form onSubmit={handleSubmit}>
+                                <Form.Field>
+                                    <label htmlFor="title">Title</label>
+                                    <input value={task.title} type="text" placeholder="Write your title" name="title" onChange={handleChange} />
+                                </Form.Field>
+                                <Form.Field>
+                                    <label htmlFor="description">Description</label>
+                                    <textarea value={task.description} name="description" rows={2} placeholder="Write your description" onChange={handleChange}></textarea>
+                                </Form.Field>
+                                {router.query.id ? (
+                                    <Button color="teal">
+                                        <Icon name="exchange" />
+                                        Update
+                                    </Button>
+                                ): (
+                                    <Button color="primary">
+                                        <Icon name="save" />
+                                        Save
+                                    </Button>
+                                )}
+                            </Form>
+                        </Card.Content>
+                    </Card>
+
+                    <Button color="red" onClick={() => setOpenConfirm(true)}>
+                        <Icon name="trash alternate" />
+                        Delete
+                    </Button>
+
+                </Grid.Column>
+            </Grid>
+            <Confirm 
+                header='Delete a task'
+                content={`Are you sure you want to delete this task?`}
+                open={openConfirm}
+                onCancel={() => setOpenConfirm(false)}
+                onConfirm={() => deleteTask(task)}
+            />
         </Layout>
     )
 }

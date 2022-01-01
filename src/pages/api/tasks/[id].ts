@@ -22,7 +22,7 @@ export default async function tasks(req: NextApiRequest, res: NextApiResponse) {
         case 'PUT':
             try {
                 const {title, description} = req.body
-                const text = 'UPDATE tasks SET title = $1, description = $2 WHERE id = $3'
+                const text = 'UPDATE tasks SET title = $1, description = $2 WHERE id = $3 RETURNING *'
                 const values = [title, description, query.id];
                 const result = await conn.query(text, values);
                 if(result.rows.length === 0) {
@@ -34,7 +34,7 @@ export default async function tasks(req: NextApiRequest, res: NextApiResponse) {
             }
         case 'DELETE':
             try {
-                const text = 'DELETE FROM tasks WHERE id = $1'
+                const text = 'DELETE FROM tasks WHERE id = $1 RETURNING *'
                 const values = [query.id];
                 const result = await conn.query(text, values);
                 if(result.rowCount === 0) {

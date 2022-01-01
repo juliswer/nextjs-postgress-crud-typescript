@@ -8,7 +8,7 @@ interface Props {
 
 export default function TaskList({tasks} : Props) {
     return (
-        <Card.Group>
+        <Card.Group itemsPerRow={4}>
             {tasks.map((task) => (
                 <Card key={task.id}>
                     <Card.Content>

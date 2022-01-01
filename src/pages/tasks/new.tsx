@@ -2,6 +2,7 @@ import {ChangeEvent, useState} from 'react';
 import {Button, Card, Form, Icon} from 'semantic-ui-react';
 import { useRouter } from "next/router";
 import {Task} from 'src/interfaces/Task';
+import Layout from 'src/components/Layout'
 
 export default function newPage() {
 
@@ -42,7 +43,7 @@ export default function newPage() {
     }
 
     return (
-        <>
+        <Layout>
             <Card>
                 <Card.Content>
                     <Form onSubmit={handleSubmit}>
@@ -61,6 +62,6 @@ export default function newPage() {
                     </Form>
                 </Card.Content>
             </Card>
-        </>
+        </Layout>
     )
 }

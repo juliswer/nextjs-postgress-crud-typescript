@@ -3,6 +3,7 @@ import {Task} from 'src/interfaces/Task';
 import {Grid, Button} from 'semantic-ui-react';
 import {useRouter} from 'next/router';
 import TaskList from 'src/components/tasks/TaskList';
+import Layout from 'src/components/Layout'
 
 interface Props {
   tasks: Task[]
@@ -13,7 +14,7 @@ export default function index({tasks}: Props) {
   const router = useRouter();
 
   return (
-    <>
+    <Layout>
       {
         tasks.length === 0 ? (
           <Grid columns={3} centered vertically="middle" style={{height: '70%'}}>
@@ -28,7 +29,7 @@ export default function index({tasks}: Props) {
           <TaskList tasks={tasks} />
         )
       }
-    </>
+    </Layout>
   )
 }
 

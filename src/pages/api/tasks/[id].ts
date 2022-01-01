@@ -3,16 +3,22 @@ import {conn} from '../../../utils/database'
 
 export default async function tasks(req: NextApiRequest, res: NextApiResponse) {
     
-    const {method} = req;
-    const {id} = req.query;
+    const {method, query} = req;
 
     switch (method) {
         case 'GET':
-            await conn.query('SELECT * FROM tasks WHERE id = $1', [id])
+            try {
+                const text = 'SELECT * FROM tasks WHERE id = $1'
+                const values = [query.id];
+                const result = await conn.query(text, values);
+                return res.json(result.rows[0]);
+            } catch (error) {
+                return res.status(400).json(error);
+            }
         case 'PUT':
-            return res.status(200).json(`Updating task ${id}`)
+            return res.status(200).json(`Updating task ${query.id}`)
         case 'DELETE':
-            return res.status(200).json(`Deleting task ${id}`)
+            return res.status(200).json(`Deleting task ${query.id}`)
         default:
             res.status(400).json('Method not allowed')
             break;

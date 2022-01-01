@@ -1,7 +1,3 @@
-export default function detailPage() {
-    return (
-        <div>
-            <h1>Detail view</h1>
-        </div>
-    )
-}
+import newPage from '../new';
+
+export default newPage;

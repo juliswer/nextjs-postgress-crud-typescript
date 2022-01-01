@@ -7,20 +7,30 @@ export default async function tasks(req: NextApiRequest, res: NextApiResponse) {
 
     switch (method) {
         case 'GET':
-            return res.json('getting tasks')
+            try {
+                const query = 'SELECT * FROM tasks'
+                const response = await conn.query(query)
+
+                console.log(response)
+
+                return res.status(200).json(response.rows)
+            } catch (error) {
+                return res.status(400).json(error)
+            }
         case 'POST':
-            /* const {title, description} = body;
-            await conn.query('INSERT INTO tasks (title, description) VALUES ($1, $2)', [title, description]);
-            break; */
-            const {title, description} = body;
-            console.log(title)
+            try {
+                const {title, description} = body;
+                console.log(title)
 
-            const query = "INSERT INTO tasks(title, description) VALUES ($1, $2) RETURNING *";
-            const values = [title, description];
+                const query = "INSERT INTO tasks(title, description) VALUES ($1, $2) RETURNING *";
+                const values = [title, description];
 
-            const response = await conn.query(query, values);
+                const response = await conn.query(query, values);
 
-            return res.status(200).json(response.rows[0]);
+                return res.status(200).json(response.rows[0]);
+            } catch (error) {
+                return res.status(400).json(error)
+            }
         case 'DELETE':
             return res.status(200).json('Deleting a task')
         case 'PUT':

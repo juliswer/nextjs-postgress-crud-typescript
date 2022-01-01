@@ -115,10 +115,12 @@ export default function newPage() {
                         </Card.Content>
                     </Card>
 
-                    <Button color="red" onClick={() => setOpenConfirm(true)}>
-                        <Icon name="trash alternate" />
-                        Delete
-                    </Button>
+                    {router.query.id ? (
+                        <Button color="red" onClick={() => setOpenConfirm(true)}>
+                            <Icon name="trash alternate" />
+                            Delete
+                        </Button>
+                    ) : void(0)}
 
                 </Grid.Column>
             </Grid>

@@ -6,7 +6,7 @@ export default async function index(req: NextApiRequest, res: NextApiResponse) {
 
   const response = await conn.query('SELECT NOW()')
 
-  console.log(response.rows[0].now)
+  
 
-  res.json({message: 'pong'});
+  res.json({message: 'pong', time: response.rows[0].now});
 };

@@ -24,7 +24,7 @@ export default async function tasks(req: NextApiRequest, res: NextApiResponse) {
                 console.log(result)
                 return res.json('Task updated');
             } catch (error) {
-                
+                return res.status(400).json(error);
             }
         case 'DELETE':
             try {

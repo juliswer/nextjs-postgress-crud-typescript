@@ -31,10 +31,6 @@ export default async function tasks(req: NextApiRequest, res: NextApiResponse) {
             } catch (error) {
                 return res.status(400).json(error)
             }
-        case 'DELETE':
-            return res.status(200).json('Deleting a task')
-        case 'PUT':
-            return res.status(200).json('Updating a task')
         default:
             res.status(400).json('Method not allowed')
             break;

@@ -1,5 +1,5 @@
 import {NextApiRequest, NextApiResponse} from 'next'
-import {conn} from '../../../utils/database'
+import {conn} from 'src/utils/database'
 
 export default async function tasks(req: NextApiRequest, res: NextApiResponse) {
 

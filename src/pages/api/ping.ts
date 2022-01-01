@@ -1,5 +1,5 @@
 import {NextApiRequest, NextApiResponse} from 'next';
-import {conn} from '../../utils/database';
+import {conn} from 'src/utils/database';
 require("dotenv").config();
 
 type Data = {

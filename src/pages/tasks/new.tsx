@@ -3,6 +3,8 @@ import {Button, Card, Form, Grid, Icon, Confirm} from 'semantic-ui-react';
 import { useRouter } from "next/router";
 import {Task} from 'src/interfaces/Task';
 import Layout from 'src/components/Layout'
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function newPage() {
 
@@ -46,14 +48,19 @@ export default function newPage() {
     }
 
     const deleteTask = async (task: Task) => {
-        const response = await fetch(`/api/tasks/${task.id}`, {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-        });
-        const data = await response.json();
-        router.push('/')
+        try {
+            const response = await fetch(`/api/tasks/${task.id}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+            });
+            const data = await response.json();
+            router.push('/')
+            toast.success('The task was deleted succesfully')
+        } catch (error) {
+            console.error(error);
+        }
     }
 
     const handleChange = (e: ChangeEvent<HTMLInputElement|HTMLTextAreaElement>) => {
@@ -87,6 +94,7 @@ export default function newPage() {
 
     return (
         <Layout>
+            <ToastContainer position="top-center" hideProgressBar autoClose={2000} theme={'colored'}/>
             <Grid centered columns={3} verticalAlign='middle' style={{height: '70%'}}>
                 <Grid.Column>
                     <Card>
@@ -94,7 +102,7 @@ export default function newPage() {
                             <Form onSubmit={handleSubmit}>
                                 <Form.Field>
                                     <label htmlFor="title">Title</label>
-                                    <input value={task.title} type="text" placeholder="Write your title" name="title" onChange={handleChange} />
+                                    <input autoFocus value={task.title} type="text" placeholder="Write your title" name="title" onChange={handleChange} />
                                 </Form.Field>
                                 <Form.Field>
                                     <label htmlFor="description">Description</label>
@@ -106,7 +114,7 @@ export default function newPage() {
                                         Update
                                     </Button>
                                 ): (
-                                    <Button color="primary">
+                                    <Button color="facebook">
                                         <Icon name="save" />
                                         Save
                                     </Button>

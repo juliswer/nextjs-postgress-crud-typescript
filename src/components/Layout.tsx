@@ -2,13 +2,15 @@ import React from 'react'
 import { Container } from 'semantic-ui-react';
 import Navbar from 'src/components/Navbar';
 
-export default function Layout(props) {
+export default function Layout({children} : {children : JSX.Element | JSX.Element[]}) {
     return (
         <div>
             <Navbar />
-            <Container style={{paddingTop: '2rem'}}>
-                {props.children}
-            </Container>
+            <main style={{background: '#212121'}}>
+                <Container style={{paddingTop: '2rem', height: '90vh'}}>
+                    {children}
+                </Container>
+            </main>
         </div>
     )
 }

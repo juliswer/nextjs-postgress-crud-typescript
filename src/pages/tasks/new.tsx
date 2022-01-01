@@ -5,6 +5,8 @@ import {Task} from 'src/interfaces/Task';
 
 export default function newPage() {
 
+    const router = useRouter();
+
     const [task, setTask] = useState({
         title: '',
         description: '',
@@ -33,6 +35,7 @@ export default function newPage() {
         e.preventDefault()
         try {
             await createTask(task)
+            router.push('/')
         } catch (error) {
             console.log(error)
         }
